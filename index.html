@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1><img class="plain" src="img/mesos-logo.png"/></h1>
+					<p>Cloud 'wise': prevent expensive bills and vendor lock-in by using Apache mesos</p>
+				</section>
+				<section>
+					<section>
+						<h3>Moving to the cloud</h3>
+						<p>A lot of benefits:</p>
+						<ul>
+							<li>Flexibility</li>
+							<li>Automatic software updates</li>
+							<li>Competitiveness</li>
+							<li>...</li>
+						</ul>
+						<aside class="notes">
+							<ul>
+								<li>Flexibility: easy to scale up and down</li>
+								<li>Suppliers take care of regular software updates, including security patches</li>
+								<li>State-of-the-art technology at your fingertips</li>
+							</ul>
+						</aside>
+					</section>
+					<section>
+						<h3>But in practice... (1)</h3>
+						<h1><img class="plain" src="img/burning-money.gif"/></h1>
+						<p>Our relationship with our favourite cloud provider...</p>
+						<p>The resources we pay for are <b>underutilized</b></p>
+						<aside class="notes">
+							<ul>
+								<li>In a lot of our AWS environments, CPU and Memory usage is very low.</li>
+								<li>Is there a way to optimize our AWS resource usage?</li>
+							</ul>
+						</aside>
+					</section>
+					<section>
+						<h3>But in practice... (2)</h3>
+						<h1><img class="plain" src="img/cloud-lock-in.jpg"/></h1>
+						<p>When using the higher level services offered by a cloud provider (e.g. AWS: RDS, Redshift, Kinesis, etc.) there's the risk of vendor <b>lock-in</b></p>
+						<aside class="notes">
+							<p>AWS</p>
+							<ul>
+								<li>
+									S3 and EC2: no problem
+								</li>
+								<li>
+									But what about: RDS (relational database service),Redshift (Amazon's Dataware house solution), Kinesis ()
+								</li>
+
+							</ul>
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>Abstraction layer</h3>
+						<h1><img class="plain" src="img/abstraction.png"/></h1>
+						<p>To tackle the above issues, we need to introduce an extra <b>abstraction layer</b></p>
+						<p>One framework extremely suitable for this is <b>Apache Mesos</b></p>
+						<aside class="notes">
+						</aside>
+					</section>
+					<section>
+						<h3>Apache Mesos: 10k feet</h3>
+						<h1><img class="plain" src="img/mesos-abstraction.png"/></h1>
+						<ul>
+							<li>Efficient resource <b>isolation</b> and <b>sharing</b> across <b>multiple</b> distributed applications</li>
+							<li>Mesos: <b>kernel</b> distributed OS</li>
+							<li>Ideally: one mesos cluster for the <b>whole</b> data center</li>
+						</ul>
+						<aside class="notes">
+							<ul>
+								<li>Cluster manager that provides efficient resource <b>isolation</b> and <b>sharing</b> across <b>multiple</b> distributed applications</li>
+								<li>Mesos is acting like the <b>kernel</b> of a distributed Operation System</li>
+								<li>Ideally, one mesos cluster should span the whole data center</li>
+							</ul>
+						</aside>
+					</section>
+					<section data-background-image="img/mesos-architecture.png">
+						<h3>Apache Mesos: efficient sharing of resources</h3>
+						<p>How?</p>
+						<ol>
+							<li>Mesos <b>master</b> determines which resources are available</li>
+							<li>It makes offers back to specific application <b>schedulers</b> (e.g. Spark): can accept or reject offers</li>
+						</ol>
+						<p>=> Non-monolithic scheduling: <b>2-level</b> scheduling were scheduling algorithms are pluggable</p>
+						<aside class="notes">
+						This way of scheduling is also known as two-level scheduling.
+						</aside>
+					</section>
+					<section>
+						<h3>Apache Mesos: isolation</h3>
+						<h1><img class="plain" src="img/docker.png"/></h1>
+						<p>Isolation is attained by using <b>containers</b>, a  lightweight alternative to virtual machines</p>
+						<p><a href="http://mesos.apache.org/documentation/latest/containerizer/">Containerizers:</a></p>
+						<ul>
+							<li>Docker</li>
+							<li>Mesos: using cgroups</li>
+							<li>Your own containerizer...</li>
+						</ul>
+						<aside class="notes">
+
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>Mesos ecosystem</h3>
+						<ul>
+							<li><b><a href="https://mesosphere.github.io/marathon/">Marathon</a></b>:  orchestrator for applications and services: <i>init</i> system of an OS (systemd,upstart). Alternatives are Kubernetes and Docker Swarm</li>
+							<li><b><a href="https://mesos.github.io/chronos/">Chronos</a></b>: job scheduler for Mesos: <i>cron</i></li>
+							<li><b><a href="https://mesos.github.io/chronos/">DC/OS</a></b>: Data Center Operation System. Both <i>enterprise</i> and <i>open source</i> editions available. It's adding these features to Mesos:
+								<ul>
+									<li><b>Open Source</b>: service discovery, package management, configuration management (UI + CLI)</li>
+									<li><b>Enterprise</b>: security, monitoring, multi-tenant features</li>
+								</ul>
+
+							</li>
+
+						</ul>
+					</section>
+					<section data-background-image="img/cloud.png">
+						<h3>Installing DC/OS</h3>
+						<ul>
+							<li><b>Local</b>: <a href="https://github.com/dcos/dcos-vagrant">Vagrant Installer</a></li>
+							<li><b>Cloud</b>: <a href="https://dcos.io/docs/1.8/administration/installing/cloud/">Scripts/templates</a> available to install DC/OS on major cloud providers:</li>
+								<ul>
+									<li>AWS: <a href="https://downloads.dcos.io/dcos/stable/aws.html?_ga=1.83278486.1032169256.1478525771">CloudFormation templates</a></li>
+									<li>Azure: <a href="https://downloads.dcos.io/dcos/stable/azure.html?_ga=1.142054066.1032169256.1478525771">templates</a> or Marketplace
+									</li>
+									<li>DigitalOcean</li>
+									<li>Google Compute Engine (GCE)</li>
+								</ul>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section data-background-image="img/smack_transparent.png">
+						<h3>Mesos use cases</h3>
+						<ul>
+							<li>Big Data processing: e.g. the <a href="https://blog.codecentric.de/en/2016/04/smack-stack-hands/">SMACK stack</a></li>
+								<ul>
+									<li><b>S</b>park: big data processing engine</li>
+									<li><b>M</b>esos: resource management</li>
+									<li><b>A</b>kka: framework for building concurrent and distributed applications</li>
+									<li><b>C</b>assandra: NoSQL database</li>
+									<li><b>K</b>afka: distributed messaging system</li>
+								</ul>
+							<li>Other use cases: <a href="http://mesos.apache.org/documentation/latest/frameworks/">link</a></li>
+						</ul>
+					</section>
+					<section>
+						<h3>Notable Mesos users</h3>
+						<p><a href="http://mesos.apache.org/documentation/latest/powered-by-mesos/">Apple, Netflix, Twitter, Airbnb,...</a></p>
+					</section>
+					<section>
+						<h3>DC/OS Community</h3>
+						<p>Notable contributors:</p>
+						<p><a href="https://dcos.io/community/">Autodesk, Canonical, Cisco, Citrix, EMC, HPE, Joyent, Microsoft, NetApp, Verizon, ...</a></p>
+						<aside class="notes">
+							Mesosphere developed DCOS a couple of years ago as a commercial offering for enterprises. Apart from open sourcing DCOS with a new branding, Mesosphere has turned DC/OS into a collaborative project. Over 50 founding members became a part of the community. Prominent among those are Autodesk, Canonical, Cisco, Citrix, EMC, HPE, Joyent, Microsoft, NetApp, and Verizon.
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1><img class="plain" src="img/demo.png"/></h1>
+					</section>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
