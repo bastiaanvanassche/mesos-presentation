@@ -8,4 +8,4 @@
 # Generate PDF version of the slideshow
 [DeckTape](https://github.com/astefanutti/decktape) is a high-quality PDF exporter for HTML5 presentation frameworks. There's a docker image available, so you can generate a PDF version of your presentation running on [http://localhost:8000](http://localhost:8000):
 
-`docker run --rm --net=host -v `pwd`:/slides astefanutti/decktape http://localhost:8000 slides.pdf`
+`docker run --rm --net=host -v $(pwd):/slides astefanutti/decktape http://localhost:8000 slides.pdf`
