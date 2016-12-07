@@ -89,9 +89,9 @@
 						<h3>Apache Mesos: 10k feet</h3>
 						<h1><img class="plain" src="img/mesos-abstraction.png"/></h1>
 						<ul>
-							<li>Efficient resource <b>isolation</b> and <b>sharing</b> across <b>multiple</b> distributed applications</li>
-							<li>Mesos: <b>kernel</b> distributed OS</li>
-							<li>Ideally: one mesos cluster for the <b>whole</b> data center</li>
+							<li>Efficient resource <b>sharing</b> and <b>isolation</b> across <b>multiple</b> distributed applications</li>
+							<li>Mesos: <b>kernel</b> of distributed OS</li>
+							<li>Ideally: one Mesos cluster for the <b>whole</b> data center</li>
 						</ul>
 						<aside class="notes">
 							<ul>
@@ -108,7 +108,7 @@
 							<li>Mesos <b>master</b> determines which resources are available</li>
 							<li>It makes offers back to specific application <b>schedulers</b> (e.g. Spark): can accept or reject offers</li>
 						</ol>
-						<p>=> Non-monolithic scheduling: <b>2-level</b> scheduling were scheduling algorithms are pluggable</p>
+						<p>=> <a href="https://www.oreilly.com/ideas/a-tale-of-two-clusters-mesos-and-yarn">Non-monolithic scheduling</a>: <b>2-level</b> scheduling were scheduling algorithms are pluggable</p>
 						<aside class="notes">
 						This way of scheduling is also known as two-level scheduling.
 						</aside>
@@ -189,7 +189,8 @@
 				</section>
 				<section>
 					<section>
-						<h1><img class="plain" src="img/demo.png"/></h1>
+						<h3>Demo</h3>
+						<h1><img class="plain" src="img/monte-carlo.png"/></h1>
 					</section>
 				</section>
 
