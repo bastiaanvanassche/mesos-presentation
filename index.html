@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Mesos Presentation</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/sky.css">
@@ -27,22 +27,29 @@
 				<section>
 					<h1><img class="plain" src="img/mesos-logo.png"/></h1>
 					<p>Cloud 'wise': prevent expensive bills and vendor lock-in by using Apache mesos</p>
+					<aside class="notes">
+						<ul>
+						<li>Hi guys. I'm Bastiaan Van Assche and I'm working as a <b>software engineer</b> for the Map Product Unit 'Core' where we are responsible for <b>ingesting core features</b> into the Map.</li>
+						<li>Today I want to talk about Apache Mesos and how this technology could prevent some issues which are popping up when moving to the cloud</li>
+						</ul>
+					</aside>
 				</section>
 				<section>
 					<section>
 						<h3>Moving to the cloud</h3>
 						<p>A lot of benefits:</p>
 						<ul>
-							<li>Flexibility</li>
+							<li>Flexibility: scaling up and down</li>
 							<li>Automatic software updates</li>
-							<li>Competitiveness</li>
+							<li>Competitiveness: state of the art technology at your fingertips</li>
 							<li>...</li>
 						</ul>
 						<aside class="notes">
+							<p>For a number of years, the Maps department has been embracing <b>cloud infrastructure</b> (AWS more specifically): first for <b>testing</b> purposes but in recent times also for deploying software in <b>production</b>. This approach brings a lot of <b>benefits</b>. I'm listing some of them:</p>
 							<ul>
 								<li>Flexibility: easy to scale up and down</li>
-								<li>Suppliers take care of regular software updates, including security patches</li>
-								<li>State-of-the-art technology at your fingertips</li>
+								<li>Cloud suppliers take care of regular software updates, including security patches</li>
+								<li>State-of-the-art technology at your fingertips generates competitiveness</li>
 							</ul>
 						</aside>
 					</section>
@@ -52,24 +59,25 @@
 						<p>Our relationship with our favourite cloud provider...</p>
 						<p>The resources we pay for are <b>underutilized</b></p>
 						<aside class="notes">
+							<p>In the picture you can see the <b>relationship</b> with our favourite cloud provider. It's somewhat exaggerated but:</p>
 							<ul>
-								<li>In a lot of our AWS environments, CPU and Memory usage is very low.</li>
-								<li>Is there a way to optimize our AWS resource usage?</li>
+								<li>In a lot of our cloud environments, <b>CPU</b> and <b>Memory</b> usage are very low.</li>
 							</ul>
+							So is there a way to <b>optimize</b> our cloud resource usage?
 						</aside>
 					</section>
 					<section>
 						<h3>But in practice... (2)</h3>
 						<h1><img class="plain" src="img/cloud-lock-in.jpg"/></h1>
-						<p>When using the higher level services offered by a cloud provider (e.g. AWS: RDS, Redshift, Kinesis, etc.) there's the risk of vendor <b>lock-in</b></p>
+						<p>When using the higher level services offered by a cloud provider (e.g. AWS: Redshift, Kinesis, etc.) there's the risk of vendor <b>lock-in</b></p>
 						<aside class="notes">
-							<p>AWS</p>
+							<p>Another risk that is popping up relates to the use of <b>higher level services</b> offered by a cloud provider: the vendor <b>lock-in</b></p>
 							<ul>
 								<li>
-									S3 and EC2: no problem
+									For the basic services the risk is low: for example, <b>S3</b> (blob storage) and <b>EC2</b> (bare virtual machines).
 								</li>
 								<li>
-									But what about: RDS (relational database service),Redshift (Amazon's Dataware house solution), Kinesis ()
+									But what about: <b>Redshift</b> (Amazon's Data warehouse solution), <b>Kinesis</b> (Amazon's Streaming Platform, comparable to Apache Kafka)
 								</li>
 
 							</ul>
@@ -78,11 +86,13 @@
 				</section>
 				<section>
 					<section>
-						<h3>Abstraction layer</h3>
+						<h3>The need for an abstraction layer</h3>
 						<h1><img class="plain" src="img/abstraction.png"/></h1>
-						<p>To tackle the above issues, we need to introduce an extra <b>abstraction layer</b></p>
-						<p>One framework extremely suitable for this is <b>Apache Mesos</b></p>
+						<p>To tackle the above risks, we need to introduce an extra <b>abstraction layer</b></p>
+						<p>One framework suitable for this is <b>Apache Mesos</b></p>
 						<aside class="notes">
+							<p>To tackle the above risks, we need to introduce an extra <b>abstraction layer</b></p>
+							<p>One framework suitable for this is <b>Apache Mesos</b></p>
 						</aside>
 					</section>
 					<section>
@@ -95,14 +105,14 @@
 						</ul>
 						<aside class="notes">
 							<ul>
-								<li>Cluster manager that provides efficient resource <b>isolation</b> and <b>sharing</b> across <b>multiple</b> distributed applications</li>
-								<li>Mesos is acting like the <b>kernel</b> of a distributed Operation System</li>
-								<li>Ideally, one mesos cluster should span the whole data center</li>
+								<li>Apache Mesos achieves efficient resource <b>sharing</b> and <b>isolation</b> across <b>multiple</b> distributed applications</li>
+								<li>Mesos is an <b>abstraction</b> layer between the <b>applications</b> and the <b>virtual machines</b> of a data center: it's acting like the <b>kernel</b> of a distributed Operation System</li>
+								<li>Ideally, one Mesos cluster should span the whole data center</li>
 							</ul>
 						</aside>
 					</section>
 					<section data-background-image="img/mesos-architecture.png">
-						<h3>Apache Mesos: efficient sharing of resources</h3>
+						<h3>Efficient sharing of resources</h3>
 						<p>How?</p>
 						<ol>
 							<li>Mesos <b>master</b> determines which resources are available</li>
@@ -110,21 +120,29 @@
 						</ol>
 						<p>=> <a href="https://www.oreilly.com/ideas/a-tale-of-two-clusters-mesos-and-yarn">Non-monolithic scheduling</a>: <b>2-level</b> scheduling were scheduling algorithms are pluggable</p>
 						<aside class="notes">
-						This way of scheduling is also known as two-level scheduling.
+							<ol>Apache Mesos is a resource manager:
+								<li>Mesos <b>master</b> determines which resources are available</li>
+								<li>It makes offers back to specific application <b>schedulers</b> (e.g. Spark): can accept or reject offers</li>
+							</ol>
+							This way of scheduling is also known as two-level scheduling.
 						</aside>
 					</section>
 					<section>
-						<h3>Apache Mesos: isolation</h3>
+						<h3>Isolation</h3>
 						<h1><img class="plain" src="img/docker.png"/></h1>
-						<p>Isolation is attained by using <b>containers</b>, a  lightweight alternative to virtual machines</p>
+						<p>Isolation is achieved by using <b>containers</b>, a lightweight alternative to virtual machines</p>
 						<p><a href="http://mesos.apache.org/documentation/latest/containerizer/">Containerizers:</a></p>
 						<ul>
 							<li>Docker</li>
 							<li>Mesos: using cgroups</li>
-							<li>Your own containerizer...</li>
 						</ul>
 						<aside class="notes">
-
+							<p>Isolation is achieved by using <b>containers</b>, a  lightweight alternative to virtual machines</p>
+							<p>Mesos supports <b>existing</b> container technologies and also provides its <b>own</b> container technology:</p>
+							<ul>
+								<li>Docker</li>
+								<li>Mesos: using cgroups</li>
+							</ul>
 						</aside>
 					</section>
 				</section>
@@ -141,8 +159,13 @@
 								</ul>
 
 							</li>
-
 						</ul>
+						<aside class="notes">
+							<p>There are couple of other components that are part of the Mesos ecosystem. Some of them are:</p>
+							<ul>
+								<li>Marathon: orchestrator for applications and services: <i>init</i> system of an OS (systemd,upstart). As Mesos is a highly pluggable framework, other container orchestrators can be run on top of Mesos</li>
+							</ul>
+						</aside>
 					</section>
 					<section data-background-image="img/cloud.png">
 						<h3>Installing DC/OS</h3>
@@ -151,12 +174,25 @@
 							<li><b>Cloud</b>: <a href="https://dcos.io/docs/1.8/administration/installing/cloud/">Scripts/templates</a> available to install DC/OS on major cloud providers:</li>
 								<ul>
 									<li>AWS: <a href="https://downloads.dcos.io/dcos/stable/aws.html?_ga=1.83278486.1032169256.1478525771">CloudFormation templates</a></li>
-									<li>Azure: <a href="https://downloads.dcos.io/dcos/stable/azure.html?_ga=1.142054066.1032169256.1478525771">templates</a> or Marketplace
+									<li>Microsoft Azure: <a href="https://downloads.dcos.io/dcos/stable/azure.html?_ga=1.142054066.1032169256.1478525771">templates</a> or Marketplace
 									</li>
 									<li>DigitalOcean</li>
 									<li>Google Compute Engine (GCE)</li>
 								</ul>
 						</ul>
+						<aside class="notes">
+							<ul>
+								<li>DC/OS can be installed <b>locally</b> (one machine) for <b>testing/development</b> purposes using <b>Vagrant</b></li>
+								<li>On the cloud: there are <b>scripts/templates</b> available to install DC/OS on some <b>major cloud providers</b></li>
+								<ul>
+									<li>AWS: <a href="https://downloads.dcos.io/dcos/stable/aws.html?_ga=1.83278486.1032169256.1478525771">CloudFormation templates</a></li>
+									<li>Microsoft Azure: <a href="https://downloads.dcos.io/dcos/stable/azure.html?_ga=1.142054066.1032169256.1478525771">templates</a> or Marketplace
+									</li>
+									<li>DigitalOcean</li>
+									<li>Google Compute Engine (GCE)</li>
+								</ul>
+							</ul>
+						</aside>
 					</section>
 				</section>
 				<section>
@@ -173,24 +209,53 @@
 								</ul>
 							<li>Other use cases: <a href="http://mesos.apache.org/documentation/latest/frameworks/">link</a></li>
 						</ul>
+						<aside class="notes">
+							<p>There a <b>lot</b> of uses cases for Mesos. One very popular use case is <b>big data</b> processing. Mesos is <b>part</b> of the so called SMACK stack containing these technologies</p>
+							<ul>
+								<li><b>S</b>park: big data processing engine</li>
+								<li><b>M</b>esos: resource management</li>
+								<li><b>A</b>kka: framework for building concurrent and distributed applications</li>
+								<li><b>C</b>assandra: NoSQL database</li>
+								<li><b>K</b>afka: distributed messaging system</li>
+							</ul>
+						</aside>
+
 					</section>
 					<section>
 						<h3>Notable Mesos users</h3>
-						<p><a href="http://mesos.apache.org/documentation/latest/powered-by-mesos/">Apple, Netflix, Twitter, Airbnb,...</a></p>
+						<p><a href="http://mesos.apache.org/documentation/latest/powered-by-mesos/">Apple, Netflix, Twitter, Ebay, Airbnb,...</a></p>
+						<aside class="notes">
+							<p>This slide contains some notable users of Mesos</p>
+							<ul>
+								<li>Apple: Siri to handle voice queries</li>
+								<li>Netflix</li>
+								<li>Twitter</li>
+								<li>Ebay: Continuous Integration</li>
+								<li>Airbnb: big data processing (Spark and Hadoop)</li>
+							</ul>
+						</aside>
+
 					</section>
 					<section>
 						<h3>DC/OS Community</h3>
 						<p>Notable contributors:</p>
 						<p><a href="https://dcos.io/community/">Autodesk, Canonical, Cisco, Citrix, EMC, HPE, Joyent, Microsoft, NetApp, Verizon, ...</a></p>
 						<aside class="notes">
-							Mesosphere developed DCOS a couple of years ago as a commercial offering for enterprises. Apart from open sourcing DCOS with a new branding, Mesosphere has turned DC/OS into a collaborative project. Over 50 founding members became a part of the community. Prominent among those are Autodesk, Canonical, Cisco, Citrix, EMC, HPE, Joyent, Microsoft, NetApp, and Verizon.
+							<p>A couple of years ago, Mesosphere developed DC/OS as a <b>commercial</b> Mesos solution for <b>companies</b>.
+							<p>In the beginning of the year, Mesosphere turned DC/OS into a <b>open source project</b> with a broad range of collaborators</p>
+							<p>Over 50 founding companies became a part of the community: Important contributors are listed here: Autodesk, Canonical, Cisco, Citrix, EMC, HPE, Joyent, Microsoft, NetApp, and Verizon.</p>
 						</aside>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h3>Demo</h3>
-						<h1><img class="plain" src="img/monte-carlo.png"/></h1>
+						<p>Calculating &#928; using the <i>Monte Carlo</i> method in Apache Spark on DC/OS</p>
+						<h1><img class="plain" src="img/monte-carlo2.png"/></h1>
+						<aside class="notes">
+							<p>Calculating &#928; by throwing <b>Darts</b>, also known as the Monte Carlo method</p>
+							<p>By looking at the picture we can prove that &#928; is <b>approximately</b> 4 times M divided by N, where M is the number of <b>hits inside the circle</b> and N <b>the number of attempts</b> (throws)
+						</aside>
 					</section>
 				</section>
 
@@ -204,9 +269,13 @@
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				history: true,
-
+				transition: 'convex',
+				slideNumber: true,
+				  // your allotted time for presentation
+				allottedTime: 10 * 60 * 1000, // 3 minutes
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
+					{ src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'},
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
