@@ -1,3 +1,4 @@
+[Link](https://bastiaanvanassche.github.io/mesos-presentation) to the slideshow (hosted with GitHub pages)
 # Running the slideshow from a local web server
 1. Install Node.js (4.0.0 or later)
 2. Navigate to the presentation folder `$ cd mesos-presentation`
